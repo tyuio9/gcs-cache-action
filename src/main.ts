@@ -67,12 +67,10 @@ async function getBestMatch(
     );
 
     if (foundFile) {
-      console.log(`🤝 Found match from cache for restore key '${restoreKey}'.`);
+      console.log(`Found match from cache for restore key '${restoreKey}'.`);
       return [foundFile, 'partial'];
     } else {
-      console.log(
-        `🔸 No cache candidate found for restore key '${restoreKey}'.`,
-      );
+      console.log(`No cache candidate found for restore key '${restoreKey}'.`);
     }
   }
 
@@ -87,7 +85,7 @@ async function main() {
   const exactFileName = `${folderPrefix}/${inputs.key}.tar`;
 
   const [bestMatch, bestMatchKind] = await core.group(
-    '🔍 Searching the best cache archive available',
+    'Searching the best cache archive available',
     () => getBestMatch(bucket, inputs.key, inputs.restoreKeys),
   );
 
@@ -101,7 +99,7 @@ async function main() {
       targetFileName: exactFileName,
     });
     core.setOutput('cache-hit', 'false');
-    console.log('😢 No cache candidate found.');
+    console.log('No cache candidate found.');
     return;
   }
 
@@ -131,7 +129,7 @@ async function main() {
     });
 
     core.setOutput('cache-hit', 'false');
-    console.log('😢 No cache candidate found (missing metadata).');
+    console.log('No cache candidate found (missing metadata).');
     return;
   }
 
@@ -139,7 +137,7 @@ async function main() {
 
   return withTemporaryFile(async (tmpFile) => {
     await core
-      .group('🌐 Downloading cache archive from bucket', async () => {
+      .group('Downloading cache archive from bucket', async () => {
         console.log(`🔹 Downloading file '${bestMatch.name}'...`);
 
         return bestMatch.download({
@@ -152,7 +150,7 @@ async function main() {
       });
 
     await core
-      .group('🗜️ Extracting cache archive', () =>
+      .group('Extracting cache archive', () =>
         extractTar(tmpFile.path, compressionMethod, workspace),
       )
       .catch((err) => {
@@ -167,7 +165,7 @@ async function main() {
       targetFileName: exactFileName,
     });
     core.setOutput('cache-hit', bestMatchKind === 'exact');
-    console.log('✅ Successfully restored cache.');
+    console.log('Successfully restored cache.');
   });
 }
 
