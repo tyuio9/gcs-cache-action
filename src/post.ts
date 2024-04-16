@@ -13,7 +13,7 @@ async function main() {
 
   if (state.cacheHitKind === 'exact') {
     console.log(
-      '🌀 Skipping uploading cache as the cache was hit by exact match.',
+      'Skipping uploading cache as the cache was hit by exact match.',
     );
     return;
   }
@@ -32,7 +32,7 @@ async function main() {
 
   if (targetFileExists) {
     console.log(
-      '🌀 Skipping uploading cache as it already exists (probably due to another job).',
+      'Skipping uploading cache as it already exists (probably due to another job).',
     );
     return;
   }
@@ -65,8 +65,8 @@ async function main() {
     core.debug(`Metadata: ${JSON.stringify(customMetadata)}.`);
 
     await core
-      .group('🌐 Uploading cache archive to bucket', async () => {
-        console.log(`🔹 Uploading file '${targetFileName}'...`);
+      .group('Uploading cache archive to bucket', async () => {
+        console.log(`Uploading file '${targetFileName}'...`);
 
         await bucket.upload(tmpFile.path, {
           destination: targetFileName,
@@ -80,7 +80,7 @@ async function main() {
         throw err;
       });
 
-    console.log('✅ Successfully saved cache.');
+    console.log('Successfully saved cache.');
   });
 }
 
